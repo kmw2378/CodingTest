@@ -32,52 +32,61 @@ class Solution {
      */
     public int[] solution(int[][] users, int[] emoticons) {
         int[] answer = new int[2];
+        int[] discounts = { 10, 20, 30, 40 };
 
-        int emoticonPlusCnt = 0;
-        int emoticonSaleAmount = 0;
-        int[] emoticonDiscountRates = {10, 20, 30, 40};
+        for (int emoticon : emoticons) {
 
-        for (int[] user : users) {
+            int subscribeCount = 0;
+            int totalPrice = 0;
 
-            int minDiscountRate = user[0];
-            int maxAmount = user[1];
-            int maxSaleAmount = 0;
+            for (int discount : discounts) {
 
-            for (int emoticonDiscountRate : emoticonDiscountRates) {
+                for (int[] user : users) {
 
-                boolean isPurchaseEmoticonPlus = false;
-                int currentEmoticonSaleAmount = 0;
+                    int minDiscount = user[0];
+                    int budget = user[1];
 
-                if (emoticonDiscountRate >= minDiscountRate) {
-
-                    for (int emoticon : emoticons) {
-
-                        int currentEmoticonPrice = emoticon * (100 - emoticonDiscountRate) / 100;
-                        if (currentEmoticonSaleAmount + currentEmoticonSaleAmount < maxAmount) {
-                            currentEmoticonSaleAmount += currentEmoticonPrice;
-                        } else {
-                            isPurchaseEmoticonPlus = true;
-                            break;
-                        }
-
-                        if (currentEmoticonSaleAmount > maxSaleAmount) {
-                            maxSaleAmount = currentEmoticonSaleAmount;
-                        }
+                    if (!availableForPurchase(minDiscount, discount)) {
+                        continue;
                     }
 
-                    if (isPurchaseEmoticonPlus) {
-                        emoticonPlusCnt++;
-                        break;
-                    }
+                    int cumulativeAmount = 0;
                 }
-
-                emoticonSaleAmount += currentEmoticonSaleAmount;
             }
         }
 
-        answer[0] = emoticonPlusCnt;
-        answer[1] =emoticonSaleAmount;
-
         return answer;
+    }
+
+    private int getDiscountPrice(int emoticon, int discount) {
+        return emoticon * (100 - discount);
+    }
+
+    private boolean availableForPurchase(int minDiscount, int discount) {
+        return minDiscount >= discount;
+    }
+    static class User {
+
+        int purchaseAmount;
+        boolean isSubscribed;
+
+        public boolean isSubscribed() {
+            return isSubscribed;
+        }
+    }
+
+    static class Emoticon {
+
+        int price;
+        int discount;
+
+        public Emoticon(int price, int discount) {
+            this.price = price;
+            this.discount = discount;
+        }
+
+        public int getPurchaseAmount() {
+            return price * (100 - discount);
+        }
     }
 }
