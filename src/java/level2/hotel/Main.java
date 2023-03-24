@@ -1,4 +1,4 @@
-package hotel;
+package java.level2.hotel;
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;
