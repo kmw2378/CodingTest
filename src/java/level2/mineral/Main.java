@@ -1,4 +1,4 @@
-package mineral;
+package java.level2.mineral;
 
 import java.util.ArrayList;
 import java.util.List;
