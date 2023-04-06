@@ -1,8 +1,5 @@
 package java.level2.seesaw;
 
-import java.util.Iterator;
-import java.util.Stack;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -14,74 +11,35 @@ public class Main {
 class Solution {
     public long solution(int[] weights) {
         long answer = 0;
-        Stack<Integer> stack = new Stack<>();
 
+        int[] countArray = new int[901];
         for (int weight : weights) {
-            stack.push(weight);
+            countArray[weight - 100]++;
+
         }
 
-        for (int weight : weights) {
+        for (int i = 100; i <= 1000; i++) {
 
-            int isContainDuplicatedElementCnt = 0;
-
-            Iterator<Integer> iterator = stack.iterator();
-            while (iterator.hasNext()) {
-                if (iterator.next() == weight) {
-                    iterator.remove();
-                    isContainDuplicatedElementCnt++;
-                }
+            if (countArray[i - 100] == 0) {
+                continue;
             }
 
-            if (isContainDuplicatedElementCnt > 1) {
-                answer++;
+            answer += (countArray[i - 100] <= 1 ? 0 : ((long) countArray[i - 100] * (countArray[i - 100] - 1 ) / 2));
+
+            if (i * 2 <= 1000) {
+                answer += ((long) countArray[i * 2 - 100] * countArray[i - 100]);
             }
-
-            stack.push(weight);
-        }
-
-        System.out.println("stack = " + stack);
-
-        while (!stack.isEmpty()) {
-
-            int pop = stack.pop();
-
-            if (pop % 2 == 0) {
-                // 4, 2
-                if (stack.contains(pop / 2)) {
-                    answer++;
-                }
-
-                // 2, 3
-                if (stack.contains((pop / 2) * 3)) {
-                    answer++;
+            if (i % 2 == 0) {
+                if (i / 2 * 3 <= 1000) {
+                    answer += ((long) countArray[i / 2 * 3 - 100] * countArray[i - 100]);
                 }
             }
-
-            // 2, 4
-            if (stack.contains(pop * 2)) {
-                answer++;
-            }
-
-            if (pop % 3 == 0) {
-                // 3, 2
-                if (stack.contains((pop * 2) / 3)) {
-                    answer++;
-                }
-
-                // 3, 4
-                if (stack.contains((pop * 4) / 3)) {
-                    answer++;
-                }
-            }
-
-            // 4, 3
-            if (pop % 4 == 0) {
-                if (stack.contains((pop / 4) * 3)) {
-                    answer++;
+            if (i % 3 == 0) {
+                if (i / 3 * 4 <= 1000) {
+                    answer += ((long) countArray[i / 3 * 4 - 100] * countArray[i - 100]);
                 }
             }
         }
-
         return answer;
     }
 }
