@@ -24,7 +24,7 @@ class Solution {
                 continue;
             }
 
-            answer += (countArray[i - 100] <= 1 ? 0 : ((long) countArray[i - 100] * (countArray[i - 100] - 1 ) / 2));
+            answer += (countArray[i - 100] <= 1 ? 0 : (getCombination(countArray[i - 100])));
 
             if (i * 2 <= 1000) {
                 answer += ((long) countArray[i * 2 - 100] * countArray[i - 100]);
@@ -41,5 +41,9 @@ class Solution {
             }
         }
         return answer;
+    }
+
+    private long getCombination(int n) {
+        return (long) n * (n - 1) / 2;
     }
 }
